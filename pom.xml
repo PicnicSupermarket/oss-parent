@@ -538,6 +538,13 @@
                             </goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <!-- All relevant doclint checks are performed during
+                        the compilation phase; no need to recheck during
+                        Javadoc generation. -->
+                        <doclint>none</doclint>
+                        <source>${version.jdk}</source>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
