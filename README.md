@@ -35,7 +35,7 @@ conventions and style in order to keep the configuration as readable as
 possible.
 
 [maven-central-badge]: https://img.shields.io/maven-central/v/tech.picnic/oss-parent.svg
-[maven-central-browse]: https://repo1.maven.org/maven2/tech/picnic/oss-parent
+[maven-central-browse]: https://repo1.maven.org/maven2/tech/picnic/oss-parent/
 [maven-central-search]: https://search.maven.org
 [new-issue]: https://github.com/PicnicSupermarket/oss-parent/issues/new
 [new-pr]: https://github.com/PicnicSupermarket/oss-parent/compare
