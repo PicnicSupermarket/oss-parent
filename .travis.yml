@@ -2,16 +2,24 @@ language: java
 matrix:
   include:
     - jdk: openjdk8
-      # This is the primary target platform. In this build perform a SonarQube
-      # analysis.
-      script: ./mvnw install sonar:sonar
+      # This is the primary target platform. In this build we perform a
+      # SonarQube analysis.
+      script:
+        - ./mvnw install sonar:sonar
+        - bundle exec danger
+        - bundle exec rbprettier --check Dangerfile Gemfile
     - jdk: openjdk11
-      script: ./mvnw install
+      script:
+        - ./mvnw install
+        - bundle exec danger
 addons:
+  bundler: true
   sonarcloud:
     organization: picnic-technologies
     token: "${SONARCLOUD_TOKEN}"
-install: mvn io.takari:maven:wrapper
+install:
+  - mvn io.takari:maven:wrapper
+  - bundle install
 before_cache:
   # Don't cache the artifacts we just generated, for multiple reasons: (1) we
   # shouldn't need them next time around and (2) if we do, that indicates a
@@ -20,6 +28,9 @@ before_cache:
   - find "${HOME}/.m2/repository" -depth -name '*-SNAPSHOT' -exec rm -r '{}' \;
 cache:
   directories:
+    # The directory in which we clone and build projects that depend on this
+    # project, to see whether breaking changes were introduced.
+    - ${HOME}/.dependants
     # The local Maven repository in which third party dependencies are stored.
     - ${HOME}/.m2/repository
     # The Takari Maven Wrapper's storage for downloaded Maven distributions.
