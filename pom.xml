@@ -103,7 +103,7 @@
         <version.maven>3.6.1</version.maven>
         <version.mockito>3.0.0</version.mockito>
         <version.nullaway>0.7.5</version.nullaway>
-        <version.postgresql>42.2.6</version.postgresql>
+        <version.postgresql>42.2.13</version.postgresql>
         <version.surefire>2.22.2</version.surefire>
     </properties>
 
