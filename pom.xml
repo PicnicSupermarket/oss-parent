@@ -101,7 +101,7 @@
         <version.jdk>1.8</version.jdk>
         <version.jooq>3.13.2</version.jooq>
         <version.maven>3.6.1</version.maven>
-        <version.mockito>3.0.0</version.mockito>
+        <version.mockito>3.3.3</version.mockito>
         <version.nullaway>0.7.10</version.nullaway>
         <version.postgresql>42.2.13</version.postgresql>
         <version.surefire>2.22.2</version.surefire>
