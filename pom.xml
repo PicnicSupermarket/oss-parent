@@ -129,7 +129,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>28.0-jre</version>
+                <version>29.0-jre</version>
             </dependency>
             <!-- Specified as a workaround for
             https://github.com/mojohaus/versions-maven-plugin/issues/244. -->
