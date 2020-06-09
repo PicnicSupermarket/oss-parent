@@ -656,6 +656,18 @@
                     <artifactId>license-maven-plugin</artifactId>
                     <version>2.0.0</version>
                     <configuration>
+                        <!-- Some Maven artifacts do not explicitly state the
+                        license under which they are published. At this time
+                        the following dependencies are explicitly excluded from
+                        the license validation process:
+                        - org.osgi.enterprise: The newer version of this
+                          software is licensed as Apache-2.0, see
+                          https://repo1.maven.org/maven2/org/osgi/org.osgi.enterprise/5.0.0/org.osgi.enterprise-5.0.0.pom.
+                          This is transitive dependency of
+                          `org.postgresql:postgresql` and can be dropped once
+                          it has been upgraded to 5.0.0.
+                        -->
+                        <excludedArtifacts>org.osgi.enterprise</excludedArtifacts>
                         <!-- Nearly no projects ship a "missing third party
                         licenses" file. Since the operation of attempting to
                         retrieve these files is very slow, we have decided to
