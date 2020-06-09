@@ -1018,9 +1018,6 @@
                                     --> -Xep:AndroidJdkLibsChecker:OFF <!--
                                     We don't target JDK 7.
                                     --> -Xep:Java7ApiChecker:OFF <!--
-                                    See https://github.com/google/error-prone/issues/1236
-                                    and https://github.com/google/error-prone/issues/1248.
-                                    --> -Xep:ReturnMissingNullable:OFF <!--
                                     Deals with an Android-specific limitation
                                     not applicable to us. See also
                                     https://github.com/google/error-prone/issues/488.
