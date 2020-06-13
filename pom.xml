@@ -95,12 +95,15 @@
         specified. Used by the `patch` profile to enable patching. -->
         <error-prone.args />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.auto-service>1.0-rc6</version.auto-service>
         <version.error-prone>2.4.0</version.error-prone>
         <version.error-prone-javac>9+181-r4173-1</version.error-prone-javac>
         <version.guava-beta-checker>1.0</version.guava-beta-checker>
+        <version.immutables>2.8.8</version.immutables>
         <version.jdk>1.8</version.jdk>
         <version.jooq>3.13.2</version.jooq>
         <version.maven>3.6.1</version.maven>
+        <version.maven-plugin-tools>3.6.0</version.maven-plugin-tools>
         <version.mockito>3.3.3</version.mockito>
         <version.nullaway>0.7.10</version.nullaway>
         <version.postgresql>42.2.13</version.postgresql>
@@ -109,6 +112,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.google.auto.service</groupId>
+                <artifactId>auto-service-annotations</artifactId>
+                <version>${version.auto-service}</version>
+            </dependency>
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
@@ -146,8 +154,43 @@
                 <version>${version.nullaway}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-artifact</artifactId>
+                <version>${version.maven}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-core</artifactId>
+                <version>${version.maven}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven</groupId>
+                <artifactId>maven-plugin-api</artifactId>
+                <version>${version.maven}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.plugin-tools</groupId>
+                <artifactId>maven-plugin-annotations</artifactId>
+                <version>${version.maven-plugin-tools}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.immutables</groupId>
+                <artifactId>value-annotations</artifactId>
+                <version>${version.immutables}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq</artifactId>
+                <version>${version.jooq}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen</artifactId>
+                <version>${version.jooq}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-meta</artifactId>
                 <version>${version.jooq}</version>
             </dependency>
             <dependency>
@@ -432,6 +475,18 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.1</version>
                     <configuration>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>com.google.auto.service</groupId>
+                                <artifactId>auto-service</artifactId>
+                                <version>${version.auto-service}</version>
+                            </path>
+                            <path>
+                                <groupId>org.immutables</groupId>
+                                <artifactId>value-processor</artifactId>
+                                <version>${version.immutables}</version>
+                            </path>
+                        </annotationProcessorPaths>
                         <compilerArgs>
                             <arg>-Xmaxerrs</arg>
                             <arg>10000</arg>
@@ -570,6 +625,11 @@
                             <phase>verify</phase>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>${version.maven-plugin-tools}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
