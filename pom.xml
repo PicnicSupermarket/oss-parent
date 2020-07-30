@@ -509,16 +509,6 @@
                         <ignoreDirect>false</ignoreDirect>
                         <ignoreNonCompile>true</ignoreNonCompile>
                     </configuration>
-                    <dependencies>
-                        <!-- XXX: This dependency is declared for compatibility
-                        with JDK 11. See
-                        https://jira.apache.org/jira/browse/MDEP-613. -->
-                        <dependency>
-                            <groupId>org.apache.maven.shared</groupId>
-                            <artifactId>maven-dependency-analyzer</artifactId>
-                            <version>1.11.2</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
