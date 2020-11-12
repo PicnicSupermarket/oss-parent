@@ -5,7 +5,7 @@
       "packageNames": [
         "version.mockito"
       ],
-      "schedule": "every Monday"
+      "schedule": "on Monday"
     }
   ]
 }
