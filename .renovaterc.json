@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/renovate",
+  "packageRules": [
+    {
+      "packageNames": [
+        "version.mockito"
+      ],
+      "schedule": "every Monday"
+    }
+  ]
+}
