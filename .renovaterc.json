@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/renovate",
   "packageRules": [
     {
-      "packageNames": [
-        "version.mockito"
+      "packagePatterns": [
+        "^version\\.mockito$"
       ],
       "schedule": "on Monday"
     }
