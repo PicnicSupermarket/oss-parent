@@ -781,7 +781,7 @@
                 <plugin>
                     <groupId>org.pitest</groupId>
                     <artifactId>pitest-maven</artifactId>
-                    <version>1.5.2</version>
+                    <version>1.6.1</version>
                     <configuration>
                         <mutators>
                             <mutator>ALL</mutator>
