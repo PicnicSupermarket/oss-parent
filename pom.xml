@@ -43,7 +43,7 @@
     </issueManagement>
     <ciManagement>
         <system>Travis CI</system>
-        <url>https://travis-ci.org/PicnicSupermarket/oss-parent</url>
+        <url>https://travis-ci.com/PicnicSupermarket/oss-parent</url>
     </ciManagement>
     <distributionManagement>
         <repository>
