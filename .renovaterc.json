@@ -7,5 +7,10 @@
       ],
       "schedule": "on Monday"
     }
+  ],
+  "reviewers": [
+    "hisener",
+    "nathankooij",
+    "Stephan202"
   ]
 }
