@@ -234,7 +234,7 @@
                 <plugin>
                     <groupId>com.github.ekryd.sortpom</groupId>
                     <artifactId>sortpom-maven-plugin</artifactId>
-                    <version>2.15.0</version>
+                    <version>3.0.0</version>
                     <configuration>
                         <createBackupFile>false</createBackupFile>
                         <encoding>${project.build.sourceEncoding}</encoding>
@@ -242,6 +242,7 @@
                         <nrOfIndentSpace>4</nrOfIndentSpace>
                         <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
                         <sortDependencies>groupId,artifactId</sortDependencies>
+                        <sortDependencyExclusions>groupId,artifactId</sortDependencyExclusions>
                         <sortModules>true</sortModules>
                         <sortPlugins>groupId,artifactId</sortPlugins>
                         <sortProperties>true</sortProperties>
