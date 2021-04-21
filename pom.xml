@@ -242,6 +242,7 @@
                         <nrOfIndentSpace>4</nrOfIndentSpace>
                         <predefinedSortOrder>recommended_2008_06</predefinedSortOrder>
                         <sortDependencies>groupId,artifactId</sortDependencies>
+                        <sortDependencyExclusions>groupId,artifactId</sortDependencyExclusions>
                         <sortModules>true</sortModules>
                         <sortPlugins>groupId,artifactId</sortPlugins>
                         <sortProperties>true</sortProperties>
