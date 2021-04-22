@@ -1,5 +1,6 @@
 {
-  "$schema": "https://json.schemastore.org/renovate",
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "commitMessagePrefix": "",
   "packageRules": [
     {
       "packagePatterns": [
