@@ -1024,16 +1024,11 @@
                                     <artifactId>error_prone_core</artifactId>
                                     <version>${version.error-prone}</version>
                                 </path>
-                                <!-- XXX: Enable this plugin once we depend on
-                                Error Prone 2.3.4+; when using version 2.3.3
-                                there's a name clash for bug checker
-                                `MockitoInternalUsage`.
                                 <path>
                                     <groupId>org.mockito</groupId>
                                     <artifactId>mockito-errorprone</artifactId>
                                     <version>${version.mockito}</version>
                                 </path>
-                                -->
                             </annotationProcessorPaths>
                             <compilerArgs combine.children="append">
                                 <!-- Enable and configure Error Prone. -->
