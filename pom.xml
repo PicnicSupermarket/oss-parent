@@ -18,7 +18,7 @@
     <licenses>
         <license>
             <name>MIT</name>
-            <url>https://opensource.org/licenses/mit-license.php</url>
+            <url>https://opensource.org/licenses/MIT</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -66,7 +66,7 @@
             <!-- The test JVMs are short-running. By disabling certain
             expensive JIT optimizations we actually speed up most tests. -->
             -XX:TieredStopAtLevel=1
-            <!-- We cap memory usage. This is especially relevant on Travis CI,
+            <!-- We cap memory usage. This is primarily relevant for build agents,
             but locally this should also be more than enough. -->
             -Xmx512m
             <!-- This argument cannot be set through Surefire's
@@ -92,9 +92,12 @@
         So we provide a default value. -->
         <build.number>LOCAL</build.number>
         <!-- Property using which additional Error Prone flags can be
-        specified. Used by the `patch` profile to enable patching. -->
-        <error-prone.args />
+        specified. Used by the `patch` profile. -->
+        <error-prone.patch-args />
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Dependency and plugin versions that are referenced in more than
+        one place. We use these to keep dependencies in sync. Version numbers
+        that need to be referenced only once should *not* be listed here. -->
         <version.auto-service>1.0.1</version.auto-service>
         <version.error-prone>2.10.0</version.error-prone>
         <version.error-prone-javac>9+181-r4173-1</version.error-prone-javac>
@@ -245,6 +248,7 @@
                     </configuration>
                     <executions>
                         <execution>
+                            <id>verify-pom-sorting</id>
                             <goals>
                                 <goal>verify</goal>
                             </goals>
@@ -272,7 +276,7 @@
                             <bundledSignature>jdk-system-out</bundledSignature>
                             <!-- Other bundles are available but currently not
                             enabled:
-                            - commons-io-unsafe-*: while we may indirectly rely
+                            - commons-io-unsafe: while we may indirectly rely
                               on Apache Commons IO, we avoid direct
                               dependencies.
                             - jdk-deprecated: we compile with `-Xlint:all`,
@@ -326,6 +330,7 @@
                             <module name="Checker">
                                 <module name="SuppressWarningsFilter" />
                                 <module name="TreeWalker">
+                                    <module name="AbbreviationAsWordInName" />
                                     <module name="AnnotationUseStyle">
                                         <!-- XXX: Right now this check doesn't
                                         completely enforce the desired style.
@@ -334,6 +339,12 @@
                                         = ALWAYS` and `singleArrayCurlies =
                                         NEVER` style. -->
                                     </module>
+                                    <module name="AvoidEscapedUnicodeCharacters">
+                                        <property name="allowEscapesForControlCharacters" value="true" />
+                                        <property name="allowIfAllCharactersEscaped" value="true" />
+                                        <property name="allowNonPrintableEscapes" value="true" />
+                                    </module>
+                                    <module name="AvoidNoArgumentSuperConstructorCall" />
                                     <module name="DeclarationOrder">
                                         <!-- We don't enforce sorting fields by
                                         their visibility modifier, for two
@@ -348,14 +359,32 @@
                                         - Sometimes a field is annotated
                                           `@VisibleForTesting`. It may then be
                                           preferable not to reorder. The plugin
-                                          does not current respect this
-                                          annotation. -->
+                                          does not currently respect this
+                                          annotation.
+                                        Note that as-is this check also doesn't
+                                        enforce that static fields are before
+                                        instance fields. See
+                                        https://github.com/checkstyle/checkstyle/issues/7043. -->
                                         <property name="ignoreModifiers" value="true" />
                                     </module>
                                     <module name="DefaultComesLast" />
                                     <module name="DesignForExtension" />
-                                    <module name="EmptyBlock" />
-                                    <module name="EmptyCatchBlock" />
+                                    <module name="EmptyBlock">
+                                        <property name="option" value="text" />
+                                    </module>
+                                    <module name="EmptyCatchBlock">
+                                        <property name="exceptionVariableName" value="ignored" />
+                                    </module>
+                                    <module name="EmptyLineSeparator">
+                                        <!-- XXX: Google Java Format doesn't
+                                        enforce an empty line before method
+                                        declarations with Javadoc. This rule
+                                        flags those cases. For technical
+                                        reasons this entails inspecting not
+                                        just `METHOD_DEF` tokens. See
+                                        https://github.com/google/google-java-format/issues/399. -->
+                                        <property name="tokens" value="CLASS_DEF, CTOR_DEF, ENUM_DEF, INSTANCE_INIT, INTERFACE_DEF, METHOD_DEF, STATIC_INIT" />
+                                    </module>
                                     <module name="EmptyStatement" />
                                     <module name="FinalClass" />
                                     <module name="HiddenFieldCheck">
@@ -363,20 +392,40 @@
                                         <property name="ignoreSetter" value="true" />
                                         <property name="setterCanReturnItsClass" value="true" />
                                     </module>
+                                    <module name="IllegalIdentifierName" />
                                     <module name="IllegalImport">
+                                        <property name="illegalClasses" value="com.mongodb.lang.Nullable">
+                                            <!-- Instead, please use
+                                            `javax.annotation.Nullable`. -->
+                                        </property>
+                                        <property name="illegalClasses" value="io.micrometer.core.lang.Nullable">
+                                            <!-- Instead, please use
+                                            `javax.annotation.Nullable`. -->
+                                        </property>
                                         <property name="illegalClasses" value="javax.annotation.concurrent.Immutable">
                                             <!-- Instead, please use
                                             `com.google.errorprone.annotations.Immutable`. -->
                                         </property>
-                                        <property name="illegalClasses" value="javax.xml.bind.DatatypeConverter" />
+                                        <property name="illegalClasses" value="org.jetbrains.annotations.VisibleForTesting">
+                                            <!-- Instead, please use
+                                            `com.google.common.annotations.VisibleForTesting`. -->
+                                        </property>
                                         <property name="illegalClasses" value="org.springframework.context.annotation.ComponentScan">
                                             <!-- Instead, please explicitly
                                             `@Import` the components. -->
                                         </property>
+                                        <property name="illegalClasses" value="org.springframework.lang.Nullable">
+                                            <!-- Instead, please use
+                                            `javax.annotation.Nullable`. -->
+                                        </property>
                                         <property name="illegalPkgs" value="com.amazonaws.annotation" />
                                         <property name="illegalPkgs" value="com.beust.jcommander.internal" />
                                         <property name="illegalPkgs" value="com.google.api.client.repackaged" />
+                                        <property name="illegalPkgs" value="com.google.common.cache">
+                                            <!-- Instead, please use Caffeine. -->
+                                        </property>
                                         <property name="illegalPkgs" value="com.newrelic.agent.deps" />
+                                        <property name="illegalPkgs" value="com.tngtech.archunit.thirdparty" />
                                         <property name="illegalPkgs" value="jdk" />
                                         <property name="illegalPkgs" value="jersey.repackaged" />
                                         <property name="illegalPkgs" value="nl.jqno.equalsverifier.internal" />
@@ -385,7 +434,13 @@
                                             custom helper method. -->
                                         </property>
                                         <property name="illegalPkgs" value="org.immutables.value.internal" />
+                                        <property name="illegalPkgs" value="org.jongo.marshall.jackson.oid">
+                                            <!-- Instead, please use Jackson's
+                                            `@JsonProperty` annotation. -->
+                                        </property>
                                         <property name="illegalPkgs" value="org.mutabilitydetector.internal" />
+                                        <property name="illegalPkgs" value="org.testcontainers.shaded" />
+                                        <property name="illegalPkgs" value="org.testng.internal" />
                                     </module>
                                     <module name="IllegalImport">
                                         <!-- XXX: This config uses
@@ -395,32 +450,73 @@
                                         this config can be merged into the one
                                         above. See
                                         https://github.com/checkstyle/checkstyle/issues/4954. -->
-                                        <property name="illegalClasses" value="org\.testng\.AssertJUnit(\..*?)?" />
+                                        <property name="illegalClasses" value="com\.google\.api\.client\.util\.Preconditions(\..*?)?">
+                                            <!-- Instead, please use
+                                            `com.google.common.base.Preconditions`. -->
+                                        </property>
+                                        <property name="illegalClasses" value="com\.nimbusds\.jose\.util\.StandardCharset(\..*?)?">
+                                            <!-- Instead, please use
+                                            `java.nio.charset.StandardCharsets`. -->
+                                        </property>
+                                        <property name="illegalClasses" value="javax\.xml\.bind\.DatatypeConverter(\..*?)?" />
+                                        <property name="illegalClasses" value="org\.assertj\.core\.util\.Preconditions(\..*?)?">
+                                            <!-- Instead, please use
+                                            `com.google.common.base.Preconditions`. -->
+                                        </property>
+                                        <property name="illegalClasses" value="org\.assertj\.core\.util\.Streams(\..*?)?">
+                                            <!-- Instead, please use
+                                            `com.google.common.collect.Streams`. -->
+                                        </property>
+                                        <property name="illegalClasses" value="org\.junit\.jupiter\.api\.Assertions(\..*?)?">
+                                            <!-- Instead, please use
+                                            `org.assertj.core.api.Assertions`. -->
+                                        </property>
+                                        <property name="illegalClasses" value="org\.springframework\.stereotype\.(Component|Controller|Service)">
+                                            <!-- We don't use Spring's
+                                            component scanning, so `@Component`
+                                            and `@Service` have no effect.
+                                            Instead of `@Controller` use
+                                            `@RestController`. -->
+                                        </property>
+                                        <property name="illegalClasses" value="org\.springframework\.util\.Assert(\..*?)?">
+                                            <!-- Instead, please use
+                                            `com.google.common.base.Preconditions`. -->
+                                        </property>
+                                        <property name="illegalClasses" value="org\.testng\.AssertJUnit(\..*?)?">
+                                            <!-- Instead, please use
+                                            `org.assertj.core.api.Assertions`. -->
+                                        </property>
                                         <property name="regexp" value="true" />
                                     </module>
                                     <module name="IllegalCatch" />
                                     <module name="IllegalThrows" />
                                     <module name="InnerAssignment" />
                                     <module name="InvalidJavadocPosition" />
+                                    <module name="JavadocBlockTagLocation" />
+                                    <module name="MatchXpath">
+                                        <property name="query" value="//BLOCK_COMMENT_BEGIN[./COMMENT_CONTENT[contains(@text, '@author')]]" />
+                                        <message key="matchxpath.match" value="Avoid the `@author` Javadoc tag; Git history suffices." />
+                                    </module>
                                     <module name="MissingDeprecated" />
                                     <module name="MutableException" />
                                     <module name="NeedBraces" />
                                     <module name="NoClone" />
+                                    <module name="NoCodeInFile" />
+                                    <module name="NoEnumTrailingComma" />
                                     <module name="NoFinalizer" />
                                     <module name="PackageDeclaration" />
+                                    <module name="PackageName">
+                                        <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$" />
+                                    </module>
                                     <module name="ParameterAssignment" />
                                     <module name="RedundantModifier" />
                                     <module name="SimplifyBooleanExpression" />
                                     <module name="SimplifyBooleanReturn" />
-                                    <module name="SuppressWarningsHolder" />
-                                    <module name="TrailingComment" />
-                                    <module name="WriteTag">
-                                        <property name="tag" value="@author" />
-                                        <property name="tagFormat" value="\S" />
-                                        <property name="tagSeverity" value="error" />
-                                        <property name="severity" value="ignore" />
+                                    <module name="SuppressWarningsHolder">
+                                        <property name="aliasList" value="com.puppycrawl.tools.checkstyle.checks.coding.UnusedLocalVariableCheck=unused" />
                                     </module>
-                                    <module name="UnnecessaryParentheses" />
+                                    <module name="TrailingComment" />
+                                    <module name="UnnecessarySemicolonAfterTypeMemberDeclaration" />
                                     <module name="UnnecessarySemicolonInEnumeration" />
                                     <module name="UnnecessarySemicolonInTryWithResources" />
                                     <module name="UnusedImports">
@@ -428,6 +524,7 @@
                                         but (currently) doesn't warn about
                                         JavaDoc-only imports. -->
                                     </module>
+                                    <module name="VisibilityModifier" />
                                 </module>
                                 <module name="UniqueProperties" />
                             </module>
@@ -435,6 +532,16 @@
                         <excludes>**/data/**/schema/**/*</excludes>
                         <failOnViolation>false</failOnViolation>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <!-- The plugin's "excludes" property accepts an Ant
+                        pattern, but does not match against the full path. So
+                        rather than explicitly excluding generated sources, we
+                        have to explicitly include "original" sources. -->
+                        <sourceDirectories>
+                            <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                        </sourceDirectories>
+                        <testSourceDirectories>
+                            <testSourceDirectory>${project.build.testSourceDirectory}</testSourceDirectory>
+                        </testSourceDirectories>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -506,6 +613,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>2.8.2</version>
+                    <configuration>
+                        <retryFailedDeploymentCount>3</retryFailedDeploymentCount>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -516,6 +626,11 @@
                         <rules>
                             <banDuplicatePomDependencyVersions />
                             <dependencyConvergence />
+                            <requireEncoding>
+                                <acceptAsciiSubset>true</acceptAsciiSubset>
+                                <encoding>ISO-8859-1</encoding>
+                                <includes>src/main/resources/**/*.properties,src/test/resources/**/*.properties</includes>
+                            </requireEncoding>
                             <requireJavaVersion>
                                 <version>${version.jdk}</version>
                             </requireJavaVersion>
@@ -575,6 +690,8 @@
                                 <Implementation-Title>${project.name}</Implementation-Title>
                                 <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
                                 <Implementation-Version>${project.version}.${build.number}.${build.revision}</Implementation-Version>
+                                <Rookout-Repository>${project.scm.url}</Rookout-Repository>
+                                <Rookout-Revision>${build.revision}</Rookout-Revision>
                             </manifestEntries>
                         </archive>
                     </configuration>
@@ -632,6 +749,7 @@
                         <delimiters>
                             <delimiter>@</delimiter>
                         </delimiters>
+                        <propertiesEncoding>ISO-8859-1</propertiesEncoding>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -733,7 +851,7 @@
                     </configuration>
                     <executions>
                         <execution>
-                            <id>modernize</id>
+                            <id>run-modernizer</id>
                             <goals>
                                 <goal>modernizer</goal>
                             </goals>
@@ -753,7 +871,8 @@
                     <configuration>
                         <generator>
                             <generate>
-                                <javaTimeTypes>true</javaTimeTypes>
+                                <deprecated>false</deprecated>
+                                <generatedAnnotation>true</generatedAnnotation>
                             </generate>
                         </generator>
                     </configuration>
@@ -775,10 +894,7 @@
                     <artifactId>pitest-maven</artifactId>
                     <version>1.7.5</version>
                     <configuration>
-                        <mutators>
-                            <mutator>ALL</mutator>
-                        </mutators>
-                        <!-- Use multple threads to speed things up. Extend
+                        <!-- Use multiple threads to speed things up. Extend
                         timeouts to prevent false positives as a result of
                         contention. -->
                         <threads>4</threads>
@@ -821,32 +937,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <!-- If explicitly enabled using `-Pcoverage` we use PIT to
-            establish coverage through mutation testing. -->
-            <id>coverage</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.pitest</groupId>
-                        <artifactId>pitest-maven</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <!-- If explicitly enabled using `-Pformat` the source code is
-            formatted. -->
-            <id>format</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.spotify.fmt</groupId>
-                        <artifactId>fmt-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <!-- By default we verify various aspects of a module and the
             artifact(s) it produces. We define these checks in a profile so
@@ -907,6 +997,8 @@
                                 Javadoc on public classes and members; in that
                                 case pass `-missing/package`. -->
                                 <arg>-Xdoclint:all,-missing</arg>
+                                <!-- We first enable all lint checks and then
+                                selectively disable a subset below. -->
                                 <arg>-Xlint:all</arg>
                                 <!-- The annotation processors do not handle
                                 all annotations present on the classpath, and
@@ -1030,7 +1122,7 @@
                                     --> -XepOpt:NullAway:AnnotatedPackages=tech.picnic <!--
                                     --> -XepOpt:NullAway:AssertsEnabled=true <!--
                                     Append additional custom arguments.
-                                    --> ${error-prone.args}
+                                    --> ${error-prone.patch-args}
                                 </arg>
                                 <?SORTPOM RESUME?>
                                 <!-- The Error Prone plugin makes certain
@@ -1053,11 +1145,11 @@
             <id>patch</id>
             <activation>
                 <property>
-                    <name>errorprone.patchchecks</name>
+                    <name>error-prone.patch-checks</name>
                 </property>
             </activation>
             <properties>
-                <error-prone.args>-XepPatchChecks:${errorprone.patchchecks} -XepPatchLocation:IN_PLACE</error-prone.args>
+                <error-prone.patch-args>-XepPatchChecks:${error-prone.patch-checks} -XepPatchLocation:IN_PLACE</error-prone.patch-args>
             </properties>
         </profile>
         <profile>
@@ -1162,6 +1254,54 @@
                             <artifactId>fmt-maven-plugin</artifactId>
                             <configuration>
                                 <skip>true</skip>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>sonar</id>
+            <properties>
+                <maven.test.failure.ignore>true</maven.test.failure.ignore>
+            </properties>
+        </profile>
+        <profile>
+            <id>third-party-license-tsv-export</id>
+            <activation>
+                <file>
+                    <exists>${path.third-party-licenses-template}</exists>
+                </file>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>license-maven-plugin</artifactId>
+                            <configuration>
+                                <fileTemplate>${path.third-party-licenses-template}</fileTemplate>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+        <profile>
+            <id>version-number-rules</id>
+            <activation>
+                <file>
+                    <exists>${path.version-number-rules}</exists>
+                </file>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>versions-maven-plugin</artifactId>
+                            <configuration>
+                                <rulesUri>file://${path.version-number-rules}</rulesUri>
                             </configuration>
                         </plugin>
                     </plugins>
