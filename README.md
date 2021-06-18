@@ -19,7 +19,7 @@ use the POM in your own project, declare it as a parent in your `pom.xml` file:
 <parent>
     <groupId>tech.picnic</groupId>
     <artifactId>oss-parent</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.3</version>
 </parent>
 ```
 
