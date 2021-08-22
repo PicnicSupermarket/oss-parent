@@ -736,6 +736,12 @@
                             methods don't allow one to convey immutability at
                             the type system level. -->
                             <exclusionPattern>com/google/common/collect/Immutable(List|Map|Set)\.(copyOf|of):.*</exclusionPattern>
+                            <!-- The plugin suggests replacing usages of
+                            Guava's `Iterables` class with
+                            `java.util.stream.Stream` equivalents, but the
+                            alternative is often more verbose, requiring
+                            unnecessary conversions to and from streams. -->
+                            <exclusionPattern>com/google/common/collect/Iterables\..*</exclusionPattern>
                         </exclusionPatterns>
                         <failOnViolations>false</failOnViolations>
                         <javaVersion>${version.jdk}</javaVersion>
