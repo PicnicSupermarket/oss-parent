@@ -3,7 +3,8 @@
   "commitMessagePrefix": "",
   "packageRules": [
     {
-      "packagePatterns": [
+      "matchPackagePatterns": [
+        "^org\\.mockito:.+$",
         "^version\\.mockito$"
       ],
       "schedule": "on Monday"
