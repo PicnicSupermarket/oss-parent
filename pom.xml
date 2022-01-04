@@ -820,39 +820,6 @@
 
     <profiles>
         <profile>
-            <!-- When using JDK 8, Error Prone requires that the specific (JDK
-            9-based) version of `javac` it integrates against is on the boot
-            classpath. This custom Error Prone `javac` is resolved implicitly
-            as a dependency of `error_prone_core`; as such the path configured
-            below is guaranteed to exist by the time the classpath is
-            consulted. -->
-            <id>jdk8</id>
-            <activation>
-                <jdk>1.8</jdk>
-                <property>
-                    <name>!verification.skip</name>
-                </property>
-            </activation>
-            <build>
-                <pluginManagement>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-compiler-plugin</artifactId>
-                            <configuration>
-                                <compilerArgs combine.children="append">
-                                    <arg>-J-XX:TieredStopAtLevel=1</arg>
-                                    <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${version.error-prone-javac}/javac-${version.error-prone-javac}.jar</arg>
-                                </compilerArgs>
-                                <fork>true</fork>
-                                <maxmem>256m</maxmem>
-                            </configuration>
-                        </plugin>
-                    </plugins>
-                </pluginManagement>
-            </build>
-        </profile>
-        <profile>
             <!-- If explicitly enabled using `-Pcoverage` we use PIT to
             establish coverage through mutation testing. -->
             <id>coverage</id>
