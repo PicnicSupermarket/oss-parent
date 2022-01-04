@@ -100,7 +100,7 @@
         <version.error-prone-javac>9+181-r4173-1</version.error-prone-javac>
         <version.guava-beta-checker>1.0</version.guava-beta-checker>
         <version.immutables>2.8.8</version.immutables>
-        <version.jdk>1.8</version.jdk>
+        <version.jdk>1.11</version.jdk>
         <version.jooq>3.15.4</version.jooq>
         <version.maven>3.8.3</version.maven>
         <version.maven-plugin-tools>3.6.0</version.maven-plugin-tools>
