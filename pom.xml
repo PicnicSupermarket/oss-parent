@@ -1010,10 +1010,15 @@
                                     --> -Xep:AndroidJdkLibsChecker:OFF <!--
                                     We don't target JDK 7.
                                     --> -Xep:Java7ApiChecker:OFF <!--
+                                    We don't target JDK 8.
+                                    --> -Xep:Java8ApiChecker:OFF <!--
                                     Deals with an Android-specific limitation
                                     not applicable to us. See also
                                     https://github.com/google/error-prone/issues/488.
                                     --> -Xep:StaticOrDefaultInterfaceMethod:OFF <!--
+                                    XXX: This check flags false positives.
+                                    See https://github.com/google/error-prone/issues/2679.
+                                    --> -Xep:VoidMissingNullable:OFF <!--
                                     --> -XepOpt:NullAway:AnnotatedPackages=tech.picnic <!--
                                     --> -XepOpt:NullAway:AssertsEnabled=true <!--
                                     Append additional custom arguments.
