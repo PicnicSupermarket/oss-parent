@@ -992,39 +992,51 @@
                                     <version>${version.error-prone}</version>
                                 </path>
                             </annotationProcessorPaths>
-                            <!-- Required to work with JDK 16+;
-                                see also https://errorprone.info/docs/installation#jdk-16. -->
                             <fork>true</fork>
                             <compilerArgs combine.children="append">
-                                <arg>-Xplugin:ErrorProne</arg>
-                                <!-- We use a separate Maven profile to raise
+                                <!-- Enable and configure Error Prone. -->
+                                <!-- XXX: The awkward comment formatting used
+                                here ensures that the plugin arguments are
+                                separated only by spaces. Once we drop support
+                                for JDK 8 we can clean this up; later versions
+                                do properly handle newline separators. See
+                                https://github.com/google/error-prone/pull/1115.
+                                The SORTPOM processing instructions prevent the
+                                `sortpom-maven-plugin` from undoing the
+                                carefully applied formatting. -->
+                                <?SORTPOM IGNORE?>
+                                <arg>
+                                    -Xplugin:ErrorProne <!--
+                                    We use a separate Maven profile to raise
                                     all warnings as errors. This way one can
                                     optionally collect all warnings without
                                     failing the build on the first error
-                                    encountered. -->
-                                <arg>-XepAllErrorsAsWarnings</arg>
-                                <!-- We want to enable almost all Error
+                                    encountered.
+                                    --> -XepAllErrorsAsWarnings <!--
+                                    We want to enable almost all Error
                                     Prone bug pattern checkers, so we enable
-                                    all and then selectively deactivate some. -->
-                                <arg>-XepAllDisabledChecksAsWarnings</arg>
-                                <!-- Some generated classes violate Error Prone
+                                    all and then selectively deactivate some.
+                                    --> -XepAllDisabledChecksAsWarnings <!--
+                                    Some generated classes violate Error Prone
                                     bug patterns. We cannot in all cases avoid
                                     that, so we simply tell Error Prone not to
-                                    warn about generated code. -->
-                                <arg>-XepDisableWarningsInGeneratedCode</arg>
-                                <arg>-XepExcludedPaths:${project.build.directory}/.*</arg>
-                                <!-- We don't target Android. -->
-                                <arg>-Xep:AndroidJdkLibsChecker:OFF</arg>
-                                <!-- We don't target JDK 7. -->
-                                <arg>-Xep:Java7ApiChecker:OFF</arg>
-                                <!-- Deals with an Android-specific limitation
+                                    warn about generated code.
+                                    --> -XepDisableWarningsInGeneratedCode <!--
+                                    --> -XepExcludedPaths:${project.build.directory}/.* <!--
+                                    We don't target Android.
+                                    --> -Xep:AndroidJdkLibsChecker:OFF <!--
+                                    We don't target JDK 7.
+                                    --> -Xep:Java7ApiChecker:OFF <!--
+                                    Deals with an Android-specific limitation
                                     not applicable to us. See also
-                                    https://github.com/google/error-prone/issues/488. -->
-                                <arg>-Xep:StaticOrDefaultInterfaceMethod:OFF</arg>
-                                <arg>-XepOpt:NullAway:AnnotatedPackages=tech.picnic</arg>
-                                <arg>-XepOpt:NullAway:AssertsEnabled=true</arg>
-                                <!-- Append additional custom arguments. -->
-                                <arg>${error-prone.args}</arg>
+                                    https://github.com/google/error-prone/issues/488.
+                                    --> -Xep:StaticOrDefaultInterfaceMethod:OFF <!--
+                                    --> -XepOpt:NullAway:AnnotatedPackages=tech.picnic <!--
+                                    --> -XepOpt:NullAway:AssertsEnabled=true <!--
+                                    Append additional custom arguments.
+                                    --> ${error-prone.args}
+                                </arg>
+                                <?SORTPOM RESUME?>
                                 <!-- The Error Prone plugin makes certain
                                 assumptions about the state of the AST at the
                                 moment it is invoked. Those assumptions are met
@@ -1032,8 +1044,6 @@
                                 flag may be dropped after resolution of
                                 https://bugs.openjdk.java.net/browse/JDK-8155674. -->
                                 <arg>-XDcompilePolicy=simple</arg>
-                                <!-- Required to work with JDK 16+;
-                                see also https://errorprone.info/docs/installation#jdk-16. -->
                                 <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
                                 <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
                                 <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
