@@ -258,23 +258,6 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>com.lewisd</groupId>
-                    <artifactId>lint-maven-plugin</artifactId>
-                    <version>0.0.11</version>
-                    <configuration>
-                        <failOnViolation>false</failOnViolation>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>validate-pom</id>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                            <phase>validate</phase>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
                     <groupId>de.thetaphi</groupId>
                     <artifactId>forbiddenapis</artifactId>
                     <version>3.2</version>
@@ -925,10 +908,6 @@
                         <artifactId>sortpom-maven-plugin</artifactId>
                     </plugin>
                     <plugin>
-                        <groupId>com.lewisd</groupId>
-                        <artifactId>lint-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
                         <groupId>de.thetaphi</groupId>
                         <artifactId>forbiddenapis</artifactId>
                     </plugin>
@@ -1126,13 +1105,6 @@
                             <artifactId>sortpom-maven-plugin</artifactId>
                             <configuration>
                                 <verifyFail>stop</verifyFail>
-                            </configuration>
-                        </plugin>
-                        <plugin>
-                            <groupId>com.lewisd</groupId>
-                            <artifactId>lint-maven-plugin</artifactId>
-                            <configuration>
-                                <failOnViolation>true</failOnViolation>
                             </configuration>
                         </plugin>
                         <plugin>
