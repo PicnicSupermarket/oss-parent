@@ -227,11 +227,6 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>com.coveo</groupId>
-                    <artifactId>fmt-maven-plugin</artifactId>
-                    <version>2.9.1</version>
-                </plugin>
-                <plugin>
                     <groupId>com.github.ekryd.sortpom</groupId>
                     <artifactId>sortpom-maven-plugin</artifactId>
                     <version>3.0.1</version>
@@ -256,6 +251,14 @@
                             <phase>verify</phase>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.spotify.fmt</groupId>
+                    <artifactId>fmt-maven-plugin</artifactId>
+                    <version>2.18</version>
+                    <configuration>
+                        <forkMode>never</forkMode>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>de.thetaphi</groupId>
@@ -838,7 +841,7 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.coveo</groupId>
+                        <groupId>com.spotify.fmt</groupId>
                         <artifactId>fmt-maven-plugin</artifactId>
                     </plugin>
                 </plugins>
@@ -858,7 +861,11 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.coveo</groupId>
+                        <groupId>com.github.ekryd.sortpom</groupId>
+                        <artifactId>sortpom-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.spotify.fmt</groupId>
                         <artifactId>fmt-maven-plugin</artifactId>
                         <executions>
                             <execution>
@@ -868,10 +875,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.github.ekryd.sortpom</groupId>
-                        <artifactId>sortpom-maven-plugin</artifactId>
                     </plugin>
                     <plugin>
                         <groupId>de.thetaphi</groupId>
@@ -1155,7 +1158,7 @@
                 <pluginManagement>
                     <plugins>
                         <plugin>
-                            <groupId>com.coveo</groupId>
+                            <groupId>com.spotify.fmt</groupId>
                             <artifactId>fmt-maven-plugin</artifactId>
                             <configuration>
                                 <skip>true</skip>
