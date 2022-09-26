@@ -1,6 +1,6 @@
 # Picnic OSS Maven Parent
 
-[![Build Status][travisci-badge]][travisci-builds]
+[![GitHub Actions][github-actions-build-badge]][github-actions-build-master]
 [![Maven Central][maven-central-badge]][maven-central-browse]
 [![SonarCloud Quality Gate][sonarcloud-badge-quality-gate]][sonarcloud-dashboard]
 [![SonarCloud Bugs][sonarcloud-badge-bugs]][sonarcloud-measure-reliability]
@@ -34,6 +34,8 @@ When submitting changes, please make every effort to follow existing
 conventions and style in order to keep the configuration as readable as
 possible.
 
+[github-actions-build-badge]: https://github.com/PicnicSupermarket/error-prone-support/actions/workflows/build.yaml/badge.svg
+[github-actions-build-master]: https://github.com/PicnicSupermarket/error-prone-support/actions/workflows/build.yaml?query=branch%3Amaster
 [maven-central-badge]: https://img.shields.io/maven-central/v/tech.picnic/oss-parent.svg
 [maven-central-browse]: https://repo1.maven.org/maven2/tech/picnic/oss-parent/
 [maven-central-search]: https://search.maven.org
@@ -47,5 +49,3 @@ possible.
 [sonarcloud-measure-reliability]: https://sonarcloud.io/component_measures?id=tech.picnic%3Aoss-parent&metric=Reliability
 [sonarcloud-measure-security]: https://sonarcloud.io/component_measures?id=tech.picnic%3Aoss-parent&metric=Security
 [sonarcloud-measure-maintainability]: https://sonarcloud.io/component_measures?id=tech.picnic%3Aoss-parent&metric=Maintainability
-[travisci-badge]: https://travis-ci.org/PicnicSupermarket/oss-parent.svg?branch=master
-[travisci-builds]: https://travis-ci.org/PicnicSupermarket/oss-parent

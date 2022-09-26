@@ -42,8 +42,8 @@
         <url>https://github.com/PicnicSupermarket/oss-parent/issues</url>
     </issueManagement>
     <ciManagement>
-        <system>Travis CI</system>
-        <url>https://travis-ci.com/PicnicSupermarket/oss-parent</url>
+        <system>GitHub Actions</system>
+        <url>https://github.com/PicnicSupermarket/oss-parent/actions</url>
     </ciManagement>
     <distributionManagement>
         <repository>
@@ -66,9 +66,9 @@
             <!-- The test JVMs are short-running. By disabling certain
             expensive JIT optimizations we actually speed up most tests. -->
             -XX:TieredStopAtLevel=1
-            <!-- We cap memory usage. This is especially relevant on Travis CI,
-            but locally this should also be more than enough. -->
-            -Xmx512m
+            <!-- We cap memory usage. This is especially relevant on CI, but
+            locally this should also be more than enough. -->
+            -Xmx1024m
             <!-- This argument cannot be set through Surefire's
             'systemPropertyVariables' configuration setting. Setting the file
             encoding is necessary because forked unit test invocations
@@ -87,7 +87,7 @@
             from showing up in the dock and capturing window focus. -->
             -Djava.awt.headless=true
         </argLine>
-        <!-- Our build system (Travis CI) provides a monotonically increasing
+        <!-- Our build system (GitHub Actions) provides a monotonically increasing
         build number. When building locally, this number is obviously absent.
         So we provide a default value. -->
         <build.number>LOCAL</build.number>
@@ -305,14 +305,6 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
-                    <groupId>io.takari</groupId>
-                    <artifactId>maven</artifactId>
-                    <version>0.7.7</version>
-                    <configuration>
-                        <maven>${version.maven}</maven>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

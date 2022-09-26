@@ -1,0 +1,29 @@
+name: Build and verify
+on:
+  pull_request:
+  push:
+    branches:
+      - 'master'
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        jdk: [ 11.0.16, 17.0.4 ]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3.0.2
+      - name: Set up JDK
+        uses: actions/setup-java@v3.4.1
+        with:
+          java-version: ${{ matrix.jdk }}
+          distribution: temurin
+          cache: maven
+      - name: Display build environment details
+        run: mvn --version
+      - name: Build project and perform SonarQube analysis
+        run: mvn -T1C install sonar:sonar
+      - name: Remove installed project artifacts
+        run: mvn build-helper:remove-project-artifact
+
+# XXX: Enable SonarCloud.
