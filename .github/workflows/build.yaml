@@ -1,9 +1,9 @@
 name: Build and verify
 on:
   pull_request:
+    types: [opened, synchronize, reopened]
   push:
-    branches:
-      - 'master'
+    branches: [master]
 jobs:
   build:
     runs-on: ubuntu-22.04
