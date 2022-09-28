@@ -26,9 +26,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -T1C install sonar:sonar \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.organization=picnic-technologies \
-          -Dsonar.projectKey=tech.picnic:oss-parent
+        run: >-
+          mvn -T1C install sonar:sonar
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.organization=picnic-technologies
+            -Dsonar.projectKey=tech.picnic:oss-parent
       - name: Remove installed project artifacts
         run: mvn build-helper:remove-project-artifact
