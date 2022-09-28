@@ -10,24 +10,32 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        jdk: [ 11.0.16, 17.0.4 ]
+        include:
+          - jdk: 11.0.16
+            sonarEnabled: true
+          - jdk: 17.0.4
+            sonarEnabled: false
     steps:
       - name: Check out code
         uses: actions/checkout@v3.0.2
+        with:
+          # Fetch entire history for SonarCloud analysis.
+          fetch-depth: 0
       - name: Set up JDK
         uses: actions/setup-java@v3.4.1
         with:
           java-version: ${{ matrix.jdk }}
           distribution: temurin
           cache: maven
-      - name: Display build environment details
-        run: mvn --version
-      - name: Build project and perform SonarQube analysis
+      - name: Display environment details and build the project
+        run: mvn --show-version -T1C install
+      - name: Perform SonarCloud analysis
+        if: ${{ matrix.sonarEnabled }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >-
-          mvn -T1C install sonar:sonar
+          mvn sonar:sonar
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.organization=picnic-technologies
           -Dsonar.projectKey=tech.picnic:oss-parent
