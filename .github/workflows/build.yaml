@@ -4,6 +4,8 @@ on:
     types: [opened, synchronize, reopened]
   push:
     branches: [$default-branch]
+permissions:
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-22.04
