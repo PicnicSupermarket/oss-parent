@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
   push:
-    branches: [$default-branch]
+    branches: [ master ]
 permissions:
   contents: read
 jobs:
@@ -18,7 +18,7 @@ jobs:
             sonarEnabled: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v3.0.2
+        uses: actions/checkout@v3.1.0
         with:
           # Fetch entire history for SonarCloud analysis.
           fetch-depth: 0
@@ -30,24 +30,20 @@ jobs:
           cache: maven
       - name: Cache SonarCloud packages
         if: ${{ matrix.sonarEnabled }}
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3.0.10
         with:
-          path: ~/.sonar/cache
+          path: "${HOME}/.sonar/cache"
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       - name: Display build environment details
         run: mvn --version
-      - name: Build the project
+      - name: Build project
         run: mvn -T1C install
       - name: Perform SonarCloud analysis
         if: ${{ matrix.sonarEnabled }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: >-
-          mvn sonar:sonar
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.organization=picnic-technologies
-          -Dsonar.projectKey=tech.picnic:oss-parent
+        run: mvn sonar:sonar
       - name: Remove installed project artifacts
         run: mvn build-helper:remove-project-artifact

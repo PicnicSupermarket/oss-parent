@@ -34,8 +34,8 @@ When submitting changes, please make every effort to follow existing
 conventions and style in order to keep the configuration as readable as
 possible.
 
-[github-actions-build-badge]: https://github.com/PicnicSupermarket/error-prone-support/actions/workflows/build.yaml/badge.svg
-[github-actions-build-master]: https://github.com/PicnicSupermarket/error-prone-support/actions/workflows/build.yaml?query=branch%3Amaster
+[github-actions-build-badge]: https://github.com/PicnicSupermarket/oss-parent/actions/workflows/build.yaml/badge.svg
+[github-actions-build-master]: https://github.com/PicnicSupermarket/oss-parent/actions/workflows/build.yaml?query=branch%3Amaster
 [maven-central-badge]: https://img.shields.io/maven-central/v/tech.picnic/oss-parent.svg
 [maven-central-browse]: https://repo1.maven.org/maven2/tech/picnic/oss-parent/
 [maven-central-search]: https://search.maven.org
