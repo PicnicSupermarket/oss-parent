@@ -1,7 +1,6 @@
 name: Build and verify
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
   push:
     branches: [ master ]
 permissions:
