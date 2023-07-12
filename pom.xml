@@ -98,7 +98,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.organization>picnic-technologies</sonar.organization>
-        <version.auto-service>1.0.1</version.auto-service>
+        <version.auto-service>1.1.1</version.auto-service>
         <version.error-prone>2.10.0</version.error-prone>
         <version.error-prone-javac>9+181-r4173-1</version.error-prone-javac>
         <version.guava-beta-checker>1.0</version.guava-beta-checker>
