@@ -29,7 +29,7 @@ jobs:
           cache: maven
       - name: Cache SonarCloud packages
         if: ${{ matrix.sonarEnabled }}
-        uses: actions/cache@v3.0.10
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c # v3.3.3
         with:
           path: "${HOME}/.sonar/cache"
           key: ${{ runner.os }}-sonar
