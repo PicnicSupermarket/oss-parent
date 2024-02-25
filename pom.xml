@@ -109,7 +109,7 @@
         <version.maven-plugin-tools>3.6.0</version.maven-plugin-tools>
         <version.mockito>4.6.1</version.mockito>
         <version.nullaway>0.9.8</version.nullaway>
-        <version.postgresql>42.3.6</version.postgresql>
+        <version.postgresql>42.3.9</version.postgresql>
         <version.surefire>2.22.2</version.surefire>
     </properties>
 
